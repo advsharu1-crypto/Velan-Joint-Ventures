@@ -2237,6 +2237,23 @@ let current=home;
 const ALIAS={'mount-road-view':'anna-salai-view','mount-road':'anna-salai-view','cit-nagar-view':'t-nagar-view','george-town-view':'parrys-view','parrys-corner-view':'parrys-view','parrys-corner-george-town-view':'parrys-view','areas':'areas-view','service-areas':'areas-view','services':'services-view','a-what-to-clarify-before-a-joint-venture':'blog-what-to-clarify-before-a-joint-venture-view','a-assessing-strategic-fit-in-a-business-partner':'blog-assessing-strategic-fit-in-a-business-partner-view','a-contractual-vs-equity-joint-ventures':'blog-contractual-vs-equity-joint-ventures-view','a-governance-and-decision-rights-in-a-joint-venture':'blog-governance-and-decision-rights-in-a-joint-venture-view','a-building-a-joint-venture-risk-register':'blog-building-a-joint-venture-risk-register-view','a-due-diligence-for-partner-evaluation':'blog-due-diligence-for-partner-evaluation-view','a-reading-market-signals-before-partnering':'blog-reading-market-signals-before-partnering-view','a-which-benchmarks-matter-in-joint-venture-evaluation':'blog-which-benchmarks-matter-in-joint-venture-evaluation-view','a-how-to-read-a-joint-venture-case-study':'blog-how-to-read-a-joint-venture-case-study-view'};
 /* Child views light up their parent in the navigation */
 const PARENT={'industry-real-estate-infrastructure':'industries','industry-technology-services':'industries','industry-manufacturing':'industries','industry-business-services':'industries','industry-trade-distribution':'industries','industry-cross-sector-partnerships':'industries',advisory:'services-view',partners:'services-view',feasibility:'services-view',diligence:'services-view',structuring:'services-view',coordination:'services-view',property:'services-view','jv-guide':'insights-view',chennai:'areas-view','west-mambalam':'areas-view','nungambakkam':'areas-view','t-nagar':'areas-view','adyar':'areas-view','alwarpet':'areas-view','porur':'areas-view','kolathur':'areas-view','tambaram':'areas-view','mogappair':'areas-view','velachery':'areas-view','anna-nagar':'areas-view','anna-salai':'areas-view','madhavaram':'areas-view','vadapalani':'areas-view','ashok-nagar':'areas-view','parrys':'areas-view','blogs':'blogs-view','blog-what-to-clarify-before-a-joint-venture':'blogs-view','blog-joint-venture-consultant-chennai':'blogs-view','blog-how-to-choose-a-joint-venture-consultant-in-chennai':'blogs-view','blog-assessing-strategic-fit-in-a-business-partner':'blogs-view','blog-contractual-vs-equity-joint-ventures':'blogs-view','blog-governance-and-decision-rights-in-a-joint-venture':'blogs-view','blog-building-a-joint-venture-risk-register':'blogs-view','blog-due-diligence-for-partner-evaluation':'blogs-view','blog-reading-market-signals-before-partnering':'blogs-view','blog-which-benchmarks-matter-in-joint-venture-evaluation':'blogs-view','blog-how-to-read-a-joint-venture-case-study':'blogs-view'};
+/* Real, crawlable address for every view. A build step (tools/build.js) writes one HTML file per path with its own title, description and canonical; keep this rule in sync with it. */
+function viewPath(v){const id=v.id;if(v===home||id==='main')return '/';return '/'+id.replace(/-view$/,'').replace(/^blog-/,'blog/').replace(/^industry-/,'industry/')}
+const PATH2VIEW={};views.forEach(v=>{PATH2VIEW[viewPath(v)]=v});
+function pathView(p){p=String(p||'').replace(/\/index\.html$/,'/');if(p.length>1)p=p.replace(/\/+$/,'');try{p=decodeURIComponent(p)}catch(e){}return PATH2VIEW[p]||null}
+/* Resolve '#id' or '/path[#id]' to {v:view, t:target element} */
+function resolveHref(h){
+  if(!h)return null;
+  let p='',x='';
+  if(h.charAt(0)==='#')x=h.slice(1);
+  else if(h.charAt(0)==='/'&&h.charAt(1)!=='/'){const i=h.indexOf('#');p=i<0?h:h.slice(0,i);x=i<0?'':h.slice(i+1)}
+  else return null;
+  try{x=decodeURIComponent(x)}catch(e){}
+  if(p){const v=pathView(p);if(!v)return null;const t=x?document.getElementById(ALIAS[x]||x):null;return{v:v,t:(t&&t.closest('[data-view]')===v)?t:v}}
+  x=ALIAS[x]||x;const t=document.getElementById(x),v=t&&t.closest('[data-view]');return v?{v:v,t:t}:null;
+}
+const hrefIs=(h,id)=>{if(!h||!id)return false;if(h==='#'+id)return true;if(h.charAt(0)==='/'){const r=resolveHref(h);return !!r&&r.v.id===id&&r.t===r.v}return false};
+window.VJV_ROUTE={viewPath:viewPath,pathView:pathView,resolveHref:resolveHref};
 const skip=document.querySelector('a.skip');
 try{if('scrollRestoration' in history)history.scrollRestoration='manual'}catch(e){}
 let calmT=0;
@@ -2250,19 +2267,19 @@ function setView(v){
   if(INFO[n]){document.title=INFO[n].t;if(meta)meta.setAttribute('content',INFO[n].d)}
   if(skip)skip.setAttribute('href','#'+v.id);
   document.dispatchEvent(new CustomEvent('vjv:view',{detail:{view:n}}));
-  document.querySelectorAll('#navLinks a, .bn-item[href^="#"]').forEach(a=>{
-    const h=a.getAttribute('href'),on=n!=='home'&&(h==='#'+v.id||h==='#'+(PARENT[n]||'~'));
-    if(n!=='home'||a.getAttribute('href')==='#insights-view'||a.getAttribute('href')==='#blogs-view'||a.getAttribute('href')==='#contact-view'){a.classList.toggle('active',on);if(on&&h==='#'+v.id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')}
+  document.querySelectorAll('#navLinks a, .bn-item[href^="#"], .bn-item[href^="/"]').forEach(a=>{
+    const h=a.getAttribute('href'),on=n!=='home'&&(hrefIs(h,v.id)||hrefIs(h,PARENT[n]));
+    if(n!=='home'||hrefIs(h,'insights-view')||hrefIs(h,'blogs-view')||hrefIs(h,'contact-view')){a.classList.toggle('active',on);if(on&&hrefIs(h,v.id))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')}
   });
 }
 function route(initial){
   let id=location.hash.slice(1);try{id=decodeURIComponent(id)}catch(e){}
   if(ALIAS[id])id=ALIAS[id];
-  let target=null,view=home;
+  let target=null,view=pathView(location.pathname)||home;
   const article=false;
   if(id){
     const t=document.getElementById(id),v=t&&t.closest('[data-view]');
-    if(v){view=v;target=t}else view=current;   /* ids inside dialogs or unknown ids keep the current view */
+    if(v){view=v;target=t}else if(!initial)view=current;   /* ids inside dialogs or unknown ids keep the current view */
   }
   const changed=view!==current;
   if(changed||initial){calm();setView(view)}
@@ -2273,20 +2290,32 @@ function route(initial){
     });
     if(changed&&!initial)view.focus({preventScroll:true});
   }
+  /* Old '#view' links and shared hash addresses are upgraded to the real path */
+  if(pathView(location.pathname)!==view){try{history.replaceState(null,'',viewPath(view)+(target&&target!==view?'#'+target.id:''))}catch(e){}}
 }
 addEventListener('hashchange',()=>route(false));
+addEventListener('popstate',()=>route(false));
 document.addEventListener('click',e=>{
   if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
-  const a=e.target.closest&&e.target.closest('a[href^="#"]');
+  const a=e.target.closest&&e.target.closest('a[href^="#"],a[href^="/"]');
   if(!a||(a.target&&a.target!=='_self'))return;
   if(a.hasAttribute('data-book')||a.hasAttribute('data-goal')||a.hasAttribute('data-open')||a.hasAttribute('data-open-prefs'))return;
-  const href=a.getAttribute('href');let id=href.slice(1);if(!id)return;
-  try{id=decodeURIComponent(id)}catch(x){}
-  const t=document.getElementById(ALIAS[id]||id),v=t&&t.closest('[data-view]');
-  if(!v||v===current||/^a-/.test(id))return;
+  const href=a.getAttribute('href');
+  if(href==='#'||href.indexOf('//')===0)return;
+  const isPath=href.charAt(0)==='/';
+  let id=isPath?'':href.slice(1);try{id=decodeURIComponent(id)}catch(x){}
+  const r=resolveHref(href);
+  if(!r)return;
+  if(!isPath&&(r.v===current||/^a-/.test(id)))return;
   V0.lastLink=a;
   e.preventDefault();
-  try{history.pushState(null,'',href)}catch(x){location.hash=href;return}
+  const tt=(r.t&&r.t!==r.v)?r.t:null,url=viewPath(r.v)+(tt?'#'+tt.id:'');
+  if(r.v===current){
+    try{history.pushState(null,'',url)}catch(x){}
+    jump(()=>{if(tt)tt.scrollIntoView({block:'start',behavior:'instant'});else window.scrollTo({top:0,left:0,behavior:'instant'})});
+    return;
+  }
+  try{history.pushState(null,'',url)}catch(x){location.href=href;return}
   route(false);
 },true);
 if(skip)skip.addEventListener('click',e=>{e.preventDefault();current.focus({preventScroll:false})});
@@ -2465,7 +2494,11 @@ if(fq&&fr){
 /* ---------- Per-view metadata and structured data ---------- */
 const SITE=String(L.siteUrl||'').replace(/\/+$/,'');
 const BASE=SITE?SITE+'/':location.href.split('#')[0];
-const abs=u=>/^https?:/.test(u)?u:BASE+String(u).replace(/^#?/,'#');
+const {viewPath,resolveHref}=window.VJV_ROUTE;
+const ORIGIN=SITE||location.origin;
+const viewUrl=v=>ORIGIN+viewPath(v);
+const absUrl=h=>{const r=resolveHref(h);if(r)return viewUrl(r.v)+(r.t&&r.t!==r.v?'#'+r.t.id:'');return /^https?:/.test(h)?h:ORIGIN+(String(h).charAt(0)==='/'?h:'/'+h)};
+const abs=absUrl;
 const setHead=(sel,make)=>{let el=document.head.querySelector(sel);if(!el){el=make();document.head.appendChild(el)}return el};
 /* Site-wide data: absolute ids and real logo / profiles only once supplied */
 (function(){
@@ -2486,11 +2519,11 @@ const setHead=(sel,make)=>{let el=document.head.querySelector(sel);if(!el){el=ma
 const PAGE_TYPE={about:'AboutPage',contact:'ContactPage',services:'CollectionPage',areas:'CollectionPage',blogs:'CollectionPage',insights:'CollectionPage'};
 function pageLd(v){
   const old=document.getElementById('viewLd');if(old)old.remove();
-  const g=[],url=BASE+'#'+v.id,name=v.dataset.title||document.title,desc=v.dataset.desc||'';
+  const g=[],url=viewUrl(v),name=v.dataset.title||document.title,desc=v.dataset.desc||'';
   /* Without a real domain (SITE_LINKS.siteUrl) no URLs are put into structured data. */
   const orgId=(SITE?SITE+'/':'')+'#organization',webId=(SITE?SITE+'/':'')+'#website';
   const cr=$$('.crumbs a, .crumbs [aria-current]',v);
-  if(SITE&&cr.length)g.push({'@type':'BreadcrumbList','@id':url+'-breadcrumb',itemListElement:cr.map((c,i)=>({'@type':'ListItem',position:i+1,name:c.textContent.trim(),item:c.tagName==='A'?BASE+c.getAttribute('href'):url}))});
+  if(SITE&&cr.length)g.push({'@type':'BreadcrumbList','@id':url+'-breadcrumb',itemListElement:cr.map((c,i)=>({'@type':'ListItem',position:i+1,name:c.textContent.trim(),item:c.tagName==='A'?absUrl(c.getAttribute('href')):url}))});
   const dn=v.dataset.view,isPost=/^blog-.+-view$/.test(v.id);
   if(dn!=='home'){
     const wp={'@type':isPost?'WebPage':(PAGE_TYPE[dn]||'WebPage'),'@id':url,name:name,description:desc,inLanguage:'en-IN',isPartOf:{'@id':webId},about:{'@id':orgId},
@@ -2511,8 +2544,8 @@ function pageLd(v){
     }
   }
   if(SITE&&dn==='blogs'){
-    const items=$$('.post-card a[href^="#blog-"]',v).filter((a,i,arr)=>arr.findIndex(b=>b.getAttribute('href')===a.getAttribute('href'))===i);
-    if(items.length)g.push({'@type':'ItemList','@id':url+'-list',itemListElement:items.map((a,i)=>({'@type':'ListItem',position:i+1,url:BASE+a.getAttribute('href'),name:(a.textContent||'').trim().slice(0,110)||a.getAttribute('href')}))});
+    const items=$$('.post-card a[href^="/blog/"],.post-card a[href^="#blog-"]',v).filter((a,i,arr)=>arr.findIndex(b=>b.getAttribute('href')===a.getAttribute('href'))===i);
+    if(items.length)g.push({'@type':'ItemList','@id':url+'-list',itemListElement:items.map((a,i)=>({'@type':'ListItem',position:i+1,url:absUrl(a.getAttribute('href')),name:(a.textContent||'').trim().slice(0,110)||a.getAttribute('href')}))});
   }
   if(!g.length)return;
   const sc=document.createElement('script');sc.type='application/ld+json';sc.id='viewLd';sc.textContent=JSON.stringify({'@context':'https://schema.org','@graph':g});document.head.appendChild(sc);
@@ -2532,7 +2565,9 @@ function onView(v){
   if(v.dataset.desc&&metaDesc)metaDesc.setAttribute('content',v.dataset.desc);
   ['og:title','og:description','twitter:title','twitter:description'].forEach(k=>{const m=document.querySelector('meta[property="'+k+'"],meta[name="'+k+'"]');if(m)m.setAttribute('content',/title/.test(k)?document.title:(metaDesc?metaDesc.content:''))});
   const ou=setHead('meta[property="og:url"]',()=>{const x=document.createElement('meta');x.setAttribute('property','og:url');return x});
-  if(SITE)ou.setAttribute('content',v.dataset.view==='home'?BASE:BASE+'#'+v.id);else ou.remove();
+  if(SITE)ou.setAttribute('content',viewUrl(v));else ou.remove();
+  /* Each view is its own address, so its canonical and alternates point at itself */
+  if(SITE){const cu=viewUrl(v);[['canonical',''],['alternate','en-IN'],['alternate','x-default']].forEach(q=>{const l=document.head.querySelector('link[data-seo="'+q[0]+(q[1]?'|'+q[1]:'')+'"]');if(l)l.href=cu})}
   pageLd(v);
 }
 document.addEventListener('vjv:view',e=>{const v=document.querySelector('main[data-view]:not([hidden])');onView(v);V.track('view_open',{view:(e.detail||{}).view})});
@@ -2947,7 +2982,7 @@ if(grid){
 function onView(name){
   if(!name||name.indexOf('blog-')!==0)return;
   const v=document.querySelector('main[data-view="'+name+'"]');if(!v)return;
-  const u=location.href.split('#')[0]+'#'+v.id,t=($('h1',v)||{}).textContent||document.title;
+  const u=(/^https?:/.test(location.origin)?location.origin+(v.dataset.view==='home'?'/':'/'+v.id.replace(/-view$/,'').replace(/^blog-/,'blog/').replace(/^industry-/,'industry/')):location.href.split('#')[0]+'#'+v.id),t=($('h1',v)||{}).textContent||document.title;
   const set=(n,h)=>{const a=$('[data-net="'+n+'"]',v);if(a)a.setAttribute('href',h)};
   set('linkedin','https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(u));
   set('x','https://twitter.com/intent/tweet?url='+encodeURIComponent(u)+'&text='+encodeURIComponent(t));
@@ -2960,7 +2995,7 @@ document.addEventListener('vjv:view',e=>onView((e.detail||{}).view));
 document.addEventListener('click',e=>{
   const c=e.target.closest('[data-copy-link]'),n=e.target.closest('[data-native-share]');
   if(!c&&!n)return;
-  const v=e.target.closest('main[data-view]'),st=$('.share-status',v),u=location.href.split('#')[0]+'#'+v.id;
+  const v=e.target.closest('main[data-view]'),st=$('.share-status',v),u=(/^https?:/.test(location.origin)?location.origin+(v.dataset.view==='home'?'/':'/'+v.id.replace(/-view$/,'').replace(/^blog-/,'blog/').replace(/^industry-/,'industry/')):location.href.split('#')[0]+'#'+v.id);
   const say=m=>{st.textContent=m;setTimeout(()=>{if(st.textContent===m)st.textContent=''},3000)};
   if(n){navigator.share({title:($('h1',v)||{}).textContent,url:u}).catch(()=>{});V.track('share_click',{network:'native',slug:v.dataset.article});return}
   V.track('share_click',{network:'copy',slug:v.dataset.article});

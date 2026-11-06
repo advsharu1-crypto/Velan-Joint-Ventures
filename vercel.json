@@ -1,4 +1,204 @@
 {
+  "buildCommand": "node tools/build.js",
+  "outputDirectory": "dist",
   "cleanUrls": false,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/insights",
+      "destination": "/insights/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/blogs",
+      "destination": "/blogs/index.html"
+    },
+    {
+      "source": "/industry/real-estate-infrastructure",
+      "destination": "/industry/real-estate-infrastructure/index.html"
+    },
+    {
+      "source": "/industry/technology-services",
+      "destination": "/industry/technology-services/index.html"
+    },
+    {
+      "source": "/industry/manufacturing",
+      "destination": "/industry/manufacturing/index.html"
+    },
+    {
+      "source": "/industry/business-services",
+      "destination": "/industry/business-services/index.html"
+    },
+    {
+      "source": "/industry/trade-distribution",
+      "destination": "/industry/trade-distribution/index.html"
+    },
+    {
+      "source": "/industry/cross-sector-partnerships",
+      "destination": "/industry/cross-sector-partnerships/index.html"
+    },
+    {
+      "source": "/blog/how-to-choose-a-joint-venture-consultant-in-chennai",
+      "destination": "/blog/how-to-choose-a-joint-venture-consultant-in-chennai/index.html"
+    },
+    {
+      "source": "/blog/joint-venture-consultant-chennai",
+      "destination": "/blog/joint-venture-consultant-chennai/index.html"
+    },
+    {
+      "source": "/blog/what-to-clarify-before-a-joint-venture",
+      "destination": "/blog/what-to-clarify-before-a-joint-venture/index.html"
+    },
+    {
+      "source": "/blog/assessing-strategic-fit-in-a-business-partner",
+      "destination": "/blog/assessing-strategic-fit-in-a-business-partner/index.html"
+    },
+    {
+      "source": "/blog/contractual-vs-equity-joint-ventures",
+      "destination": "/blog/contractual-vs-equity-joint-ventures/index.html"
+    },
+    {
+      "source": "/blog/governance-and-decision-rights-in-a-joint-venture",
+      "destination": "/blog/governance-and-decision-rights-in-a-joint-venture/index.html"
+    },
+    {
+      "source": "/blog/building-a-joint-venture-risk-register",
+      "destination": "/blog/building-a-joint-venture-risk-register/index.html"
+    },
+    {
+      "source": "/blog/due-diligence-for-partner-evaluation",
+      "destination": "/blog/due-diligence-for-partner-evaluation/index.html"
+    },
+    {
+      "source": "/blog/reading-market-signals-before-partnering",
+      "destination": "/blog/reading-market-signals-before-partnering/index.html"
+    },
+    {
+      "source": "/blog/which-benchmarks-matter-in-joint-venture-evaluation",
+      "destination": "/blog/which-benchmarks-matter-in-joint-venture-evaluation/index.html"
+    },
+    {
+      "source": "/blog/how-to-read-a-joint-venture-case-study",
+      "destination": "/blog/how-to-read-a-joint-venture-case-study/index.html"
+    },
+    {
+      "source": "/jv-guide",
+      "destination": "/jv-guide/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about/index.html"
+    },
+    {
+      "source": "/chennai",
+      "destination": "/chennai/index.html"
+    },
+    {
+      "source": "/advisory",
+      "destination": "/advisory/index.html"
+    },
+    {
+      "source": "/partners",
+      "destination": "/partners/index.html"
+    },
+    {
+      "source": "/feasibility",
+      "destination": "/feasibility/index.html"
+    },
+    {
+      "source": "/diligence",
+      "destination": "/diligence/index.html"
+    },
+    {
+      "source": "/structuring",
+      "destination": "/structuring/index.html"
+    },
+    {
+      "source": "/coordination",
+      "destination": "/coordination/index.html"
+    },
+    {
+      "source": "/property",
+      "destination": "/property/index.html"
+    },
+    {
+      "source": "/services",
+      "destination": "/services/index.html"
+    },
+    {
+      "source": "/areas",
+      "destination": "/areas/index.html"
+    },
+    {
+      "source": "/west-mambalam",
+      "destination": "/west-mambalam/index.html"
+    },
+    {
+      "source": "/nungambakkam",
+      "destination": "/nungambakkam/index.html"
+    },
+    {
+      "source": "/t-nagar",
+      "destination": "/t-nagar/index.html"
+    },
+    {
+      "source": "/adyar",
+      "destination": "/adyar/index.html"
+    },
+    {
+      "source": "/alwarpet",
+      "destination": "/alwarpet/index.html"
+    },
+    {
+      "source": "/porur",
+      "destination": "/porur/index.html"
+    },
+    {
+      "source": "/kolathur",
+      "destination": "/kolathur/index.html"
+    },
+    {
+      "source": "/tambaram",
+      "destination": "/tambaram/index.html"
+    },
+    {
+      "source": "/mogappair",
+      "destination": "/mogappair/index.html"
+    },
+    {
+      "source": "/velachery",
+      "destination": "/velachery/index.html"
+    },
+    {
+      "source": "/anna-nagar",
+      "destination": "/anna-nagar/index.html"
+    },
+    {
+      "source": "/anna-salai",
+      "destination": "/anna-salai/index.html"
+    },
+    {
+      "source": "/madhavaram",
+      "destination": "/madhavaram/index.html"
+    },
+    {
+      "source": "/vadapalani",
+      "destination": "/vadapalani/index.html"
+    },
+    {
+      "source": "/ashok-nagar",
+      "destination": "/ashok-nagar/index.html"
+    },
+    {
+      "source": "/parrys",
+      "destination": "/parrys/index.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/support/index.html"
+    }
+  ]
 }
