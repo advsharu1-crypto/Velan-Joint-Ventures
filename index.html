@@ -1283,16 +1283,16 @@ img,video,iframe,svg{max-width:100%}
       <a class="btn btn-wa" data-link="whatsapp" href="https://wa.me/919626412116?text=Hello%20Velan%20Joint%20Ventures%2C%20I%27d%20like%20to%20discuss%20a%20business%20opportunity." target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path class="wa-path"/></svg> WhatsApp</a>
     </div>
   </aside>
-  <div class="reveal right"><form class="contact-form" id="mainForm">
+  <div class="reveal right"><form class="contact-form" id="mainForm" novalidate><div class="error-summary" role="alert"></div>
     <div class="field"><label for="fullName">Full name *</label><input id="fullName" name="name" autocomplete="name" placeholder="Your full name" required></div>
     <div class="field"><label for="companyName">Company / organisation</label><input id="companyName" name="company" autocomplete="organization" placeholder="Company name"></div>
     <div class="field"><label for="email">Business email *</label><input id="email" type="email" name="email" autocomplete="email" placeholder="name@company.com" required></div>
-    <div class="field"><label for="phone">Phone number</label><input id="phone" type="tel" name="phone" autocomplete="tel" placeholder="+91"></div>
+    <div class="field"><label for="phone">Phone number *</label><input id="phone" type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+91" required></div>
     <div class="field"><label for="industry">Industry *</label><select id="industry" name="industry" required><option value="">Select industry</option><option>Real Estate &amp; Infrastructure</option><option>Manufacturing</option><option>Technology &amp; Services</option><option>Trade &amp; Distribution</option><option>Business Services</option><option>Other</option></select></div>
     <div class="field"><label for="service">Service of interest *</label><select id="service" name="service" required><option value="">Choose a service</option><option>Joint Venture Advisory</option><option>Strategic Partner Identification</option><option>Feasibility &amp; Opportunity Assessment</option><option>Due Diligence Coordination</option><option>JV Structuring Support</option><option>Project Coordination</option><option>Other / Not sure yet</option></select></div>
     <div class="field full"><label for="details">Briefly describe your opportunity *</label><textarea id="details" name="details" placeholder="What are you looking to achieve?" required></textarea></div>
-    <div class="field full"><label style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="checkbox" required style="margin-top:3px"> I agree that Velan Joint Ventures may contact me about this enquiry. *</label><span class="form-note">Please do not include confidential or sensitive financial information in this form.</span></div>
-    <div class="field full"><button class="btn btn-gold" type="submit">Submit Business Enquiry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button><div class="success-msg" id="mainSuccess" role="status">Thank you. This demo form is working locally, but no enquiry has been sent. Connect it to your email or CRM before publishing.</div><p class="form-note" style="margin-top:12px">Demo prototype: form submission is not connected to an email, database or CRM yet.</p></div>
+    <div class="field hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div><div class="field full"><label style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="checkbox" required style="margin-top:3px"> I agree that Velan Joint Ventures may contact me about this enquiry. *</label></div>
+    <div class="field full"><button class="btn btn-gold" type="submit">Submit Business Enquiry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button><div class="form-status" role="status"></div><p class="form-note" style="margin-top:12px">Submitting this form opens WhatsApp with your enquiry pre-filled so you can review and send it. Where our email service is active, a copy is also emailed to us. We use your details only to respond to your enquiry. Please do not include confidential or sensitive financial information.</p></div>
   </form></div>
 </div>
 
@@ -1493,20 +1493,19 @@ img,video,iframe,svg{max-width:100%}
     <h2 id="formTitle">Book a consultation or <em>send an enquiry.</em></h2>
     <p>Complete the form to request a consultation. A preferred date and time is a request only, not a confirmed appointment. Fields marked * are required.</p>
     <form id="contactForm" class="contact-form" novalidate>
-      <p class="proto" data-proto>Prototype notice: this form is not yet connected to an inbox, email or CRM, so submitting it does not send your details. The site owner must add a form endpoint before launch.</p>
       <div class="error-summary" role="alert"></div>
       <div class="field"><label for="cName">Full name *</label><input id="cName" name="name" autocomplete="name" required placeholder="Your full name"></div>
       <div class="field"><label for="cEmail">Work email *</label><input id="cEmail" name="email" type="email" autocomplete="email" required placeholder="name@company.com"></div>
-      <div class="field"><label for="cPhone">Phone (optional)</label><input id="cPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91"><span class="hint">Only if you would like a call.</span></div>
-      <div class="field"><label for="cCompany">Company / organisation *</label><input id="cCompany" name="company" autocomplete="organization" required placeholder="Company name"></div>
-      <div class="field full"><label for="cGoal">Partnership goal *</label><select id="cGoal" name="goal" required><option value="">Choose your main goal</option><option value="explore">Explore a joint venture opportunity</option><option value="partner">Identify a suitable partner</option><option value="assess">Assess feasibility of an opportunity</option><option value="diligence">Coordinate due diligence</option><option value="structure">Structure a joint venture</option><option value="project">Coordinate a project or collaboration</option><option value="unsure">Not sure yet</option></select></div>
+      <div class="field"><label for="cPhone">Phone number *</label><input id="cPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+91"><span class="hint">So we can call or WhatsApp you.</span></div>
+      <div class="field"><label for="cCompany">Company / organisation (optional)</label><input id="cCompany" name="company" autocomplete="organization" placeholder="Company name"></div>
+      <div class="field full"><label for="cGoal">Enquiry type *</label><select id="cGoal" name="goal" required><option value="">Choose your enquiry type</option><option value="explore">Explore a joint venture opportunity</option><option value="partner">Identify a suitable partner</option><option value="assess">Assess feasibility of an opportunity</option><option value="diligence">Coordinate due diligence</option><option value="structure">Structure a joint venture</option><option value="project">Coordinate a project or collaboration</option><option value="unsure">Not sure yet</option></select></div>
       <div class="field"><label for="cDate">Preferred consultation date (optional)</label><input id="cDate" name="preferred_date" type="date"></div>
       <div class="field"><label for="cTime">Preferred time window, India time (optional)</label><select id="cTime" name="preferred_time"><option value="">No preference</option><option>Morning (9am to 12pm)</option><option>Afternoon (12pm to 4pm)</option><option>Evening (4pm to 8pm)</option></select></div>
       <div class="field full"><label for="cMessage">Message *</label><textarea id="cMessage" name="message" maxlength="1500" required placeholder="Briefly describe the opportunity and what you would like to achieve"></textarea><span class="hint">Please do not include confidential or sensitive financial information in this form.</span></div>
       <div class="field hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
       <div class="field full"><label class="consent" for="cConsent"><input id="cConsent" name="consent" type="checkbox" required> <span>I agree that Velan Joint Ventures may contact me about this enquiry. *</span></label></div>
       <div class="field full"><button class="btn btn-gold" type="submit" data-track="contact_submit">Request a consultation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button><div class="form-status" role="status"></div>
-        <p class="form-note" style="margin-top:12px"><span class="ph">Placeholder</span> Privacy: your details would be used only to respond to this enquiry. A reviewed privacy policy must be added before launch (see the <a href="#privacy" style="text-decoration:underline">privacy note</a> in the footer).</p></div>
+        <p class="form-note" style="margin-top:12px">Submitting this form opens WhatsApp with your enquiry pre-filled so you can review and send it. Where our email service is active, a copy is also emailed to us. We use your details only to respond to your enquiry. Please do not include confidential or sensitive financial information.</p></div>
     </form>
   </div>
 
@@ -1801,7 +1800,7 @@ img,video,iframe,svg{max-width:100%}
 </aside>
 
 <!-- Enquiry modal -->
-<div class="layer" id="enquiryModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="enqIntro"><div class="modal-box enq"><button class="modal-close" type="button" data-close aria-label="Close enquiry form">&times;</button><h2 id="modalTitle">Velan Joint Ventures Enquiry</h2><p id="enqIntro" class="sr-only">All four fields are required.</p><form id="enqForm" class="contact-form" novalidate><div class="error-summary" role="alert"></div><input type="hidden" name="source" id="enqSource"><div class="field full"><label for="enqName">Customer name *</label><input id="enqName" name="name" autocomplete="name" required></div><div class="field"><label for="enqPhone">Mobile number *</label><input id="enqPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div><div class="field"><label for="enqEmail">Email address *</label><input id="enqEmail" name="email" type="email" autocomplete="email" required></div><div class="field full"><label for="enqMsg">A short description *</label><textarea id="enqMsg" name="message" rows="2" maxlength="600" required placeholder="How can we help?"></textarea></div><div class="field hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div><div class="field full"><button class="btn btn-gold" type="submit">Send Inquiry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button><div class="form-status" role="status"></div></div></form><div class="enq-alt"><a class="enq-wa" id="enqWa" href="https://wa.me/919626412116" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-4.2A8 8 0 1 1 8.4 18.8z"/></svg>WhatsApp</a><a class="enq-call" id="enqCall" data-link="phone" href="tel:+919626412116"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>Call</a></div><p class="enq-note proto" data-proto>Prototype: this form is not connected yet and will not send your details. Please use WhatsApp or Call. Do not share sensitive information.</p></div></div>
+<div class="layer" id="enquiryModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="enqIntro"><div class="modal-box enq"><button class="modal-close" type="button" data-close aria-label="Close enquiry form">&times;</button><h2 id="modalTitle">Velan Joint Ventures Enquiry</h2><p id="enqIntro" class="sr-only">All four fields are required.</p><form id="enqForm" class="contact-form" novalidate><div class="error-summary" role="alert"></div><input type="hidden" name="source" id="enqSource"><div class="field full"><label for="enqName">Customer name *</label><input id="enqName" name="name" autocomplete="name" required></div><div class="field"><label for="enqPhone">Mobile number *</label><input id="enqPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div><div class="field"><label for="enqEmail">Email address *</label><input id="enqEmail" name="email" type="email" autocomplete="email" required></div><div class="field full"><label for="enqMsg">A short description *</label><textarea id="enqMsg" name="message" rows="2" maxlength="600" required placeholder="How can we help?"></textarea></div><div class="field hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div><div class="field full"><button class="btn btn-gold" type="submit">Send Inquiry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button><div class="form-status" role="status"></div></div></form><div class="enq-alt"><a class="enq-wa" id="enqWa" href="https://wa.me/919626412116" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-4.2A8 8 0 1 1 8.4 18.8z"/></svg>WhatsApp</a><a class="enq-call" id="enqCall" data-link="phone" href="tel:+919626412116"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>Call</a></div><p class="enq-note">Send Inquiry opens WhatsApp with your details pre-filled for you to review and send. Where our email service is active, a copy is also emailed to us. Used only to respond. Please do not share sensitive information.</p></div></div>
 
 <div class="layer sheet" id="moreSheet" role="dialog" aria-modal="true" aria-labelledby="moreTitle"><div class="sheet-box"><button class="modal-close" type="button" data-close aria-label="Close menu">&times;</button><div class="sheet-grab" aria-hidden="true"></div><h2 id="moreTitle">More</h2><p>Jump to another page, or go back to the top of this one.</p><div class="sheet-links"><button type="button" id="moreTop" class="full"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg> Back to the top of this page</button><a href="#insights-view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg> Insights</a><a href="#blogs-view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v13H5zM9 11h6M9 15h6"/></svg> Blogs</a><a href="#about-view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> About</a><a href="#services-view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-6 9 6v11H3z"/></svg> Services</a><a href="#support-view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg> Support &amp; feedback</a></div><div class="sheet-cta"><a class="btn btn-gold" data-sheet-phone href="tel:+919626412116">Call</a><a class="btn btn-ghost" data-sheet-email href="mailto:velanpropertydevelopers@gmail.com">Email</a></div></div></div>
 
@@ -2048,7 +2047,7 @@ var SITE_LINKS = {
 
   /* Demo forms (not connected to a backend) */
   function demo(form,ok){if(!form||!ok)return;form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;ok.style.display='block';ok.scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'});form.querySelector('button[type="submit"]').textContent='Request Prepared ✓'})}
-  demo($('#mainForm'),$('#mainSuccess'));demo($('#popupForm'),$('#popupSuccess'));
+  
 
   $('#year').textContent=new Date().getFullYear();
 })();
@@ -2158,7 +2157,7 @@ V.setError=setError;V.fieldError=fieldError;
 V.initForm=function(form,opts){
   opts=opts||{};
   const status=$('.form-status',form),summary=$('.error-summary',form);
-  let started=false,busy=false;
+  let started=false,busy=false;const formStart=Date.now();
   form.setAttribute('novalidate','');
   form.addEventListener('focusin',()=>{if(!started){started=true;V.track('form_start',{form:opts.name})}});
   const recheck=e=>{const f=e.target.closest&&e.target.closest('.field');if(f&&f.classList.contains('invalid'))setError(e.target,fieldError(e.target))};
@@ -2189,7 +2188,47 @@ V.initForm=function(form,opts){
     data._form=opts.name||'form';data._page=document.body.getAttribute('data-current-view')||'home';
     const btn=$('button[type=submit]',form);
     const connected=!!L.formEndpoint;
-    const say=(cls,msg)=>{if(!status)return;status.className='form-status show '+cls;status.textContent=msg;status.setAttribute('tabindex','-1');status.focus()};
+    const say=(cls,msg,href,linkText)=>{if(!status)return;status.className='form-status show '+cls;status.textContent=msg;
+      if(href){status.appendChild(document.createTextNode(' '));const a=document.createElement('a');a.href=href;a.target='_blank';a.rel='noopener';a.textContent=linkText;a.style.textDecoration='underline';status.appendChild(a)}
+      status.setAttribute('tabindex','-1');status.focus()};
+    if(opts.enquiry){
+      /* Enquiry forms: open WhatsApp with the message pre-filled (the visitor reviews and sends it) and,
+         when the server-side email function is configured, also email it. Nothing is called "delivered"
+         unless the email service accepted it; WhatsApp is only ever described as "opened". */
+      const fields=[];
+      $$('input,select,textarea',form).forEach(el=>{
+        if(el.type==='hidden'||el.type==='checkbox'||el.closest('.hp'))return;
+        const f=el.closest('.field');if(!f)return;
+        if(el.tagName==='SELECT'&&!el.value)return;
+        const v=(el.tagName==='SELECT'?(el.selectedOptions[0]?el.selectedOptions[0].text:''):el.value||'').trim();
+        if(!v)return;
+        fields.push({label:labelText(f).replace(/\s*\(optional\)\s*/i,'').replace(/,\s*India time/i,''),value:v});
+      });
+      const m=/wa\.me\/(\d{10,15})/.exec(L.whatsapp||'');
+      const waUrl='https://wa.me/'+(m?m[1]:'919626412116')+'?text='+encodeURIComponent(
+        'Hello Velan Joint Ventures, I would like to make an enquiry.\n\n'+
+        fields.map(f=>'*'+f.label+':* '+f.value).join('\n')+
+        '\n\nSent from www.velanjointventures.in');
+      busy=true;if(btn){btn.disabled=true;btn.setAttribute('aria-busy','true');var btnHtml=btn.innerHTML;btn.textContent='Preparing your enquiry…'}
+      const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),15000);
+      const emailP=fetch('/api/enquiry',{method:'POST',headers:{'Content-Type':'application/json'},signal:ctl.signal,
+        body:JSON.stringify({name:data.name,email:data.email,phone:data.phone||'',fields:fields,form:opts.name,page:data._page,_gotcha:'',_t:Date.now()-formStart})})
+        .then(r=>r.json().then(j=>!!(r.ok&&j&&j.ok===true),()=>false)).catch(()=>false);
+      const w=window.open(waUrl,'_blank'); /* opened inside the click so browsers allow it */
+      if(w){try{w.opener=null}catch(e){}}
+      const emailed=await emailP;clearTimeout(tm);
+      if(emailed){
+        say('ok','Thank you. Your enquiry has been emailed to Velan Joint Ventures.'+(w?' WhatsApp has also opened with a copy; send it there if you would like a faster reply.':''),w?'':waUrl,'Open WhatsApp with a copy');
+      }else if(w){
+        say('notice','WhatsApp has opened with your enquiry pre-filled. Please review it and press Send in WhatsApp. We receive your enquiry only once you send it.');
+      }else{
+        say('fail','We could not open WhatsApp automatically and email delivery is unavailable right now, so your enquiry has not been sent. Please open WhatsApp using this link, or call +91 96264 12116.',waUrl,'Open WhatsApp');
+      }
+      V.track('form_submit',{form:opts.name,email:emailed,whatsapp:!!w});
+      if(emailed||w){form.reset();started=false}
+      busy=false;if(btn){btn.disabled=false;btn.removeAttribute('aria-busy');btn.innerHTML=btnHtml}
+      return;
+    }
     if(connected){
       busy=true;if(btn)btn.disabled=true;
       try{
@@ -2721,7 +2760,8 @@ const V=window.VJV,$=V.$;
 /* Preferred date cannot be in the past (local date) */
 const d=$('#cDate');
 if(d){const n=new Date(),p=x=>String(x).padStart(2,'0');d.min=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate())}
-V.initForm($('#contactForm'),{name:'consultation_request',successMsg:'Thank you. Your request has been sent.'});
+V.initForm($('#contactForm'),{name:'consultation_request',enquiry:true});
+V.initForm($('#mainForm'),{name:'home_enquiry',enquiry:true});
 V.initForm($('#ct-newsForm'),{name:'newsletter_contact',successMsg:'Thank you. Your subscription request has been sent.'});
 })();
 </script>
@@ -3079,7 +3119,7 @@ const calmMotion=()=>V.reduce||root.classList.contains('rm');
   const WA_TEXT='Hello Velan Joint Ventures, I would like to discuss a business opportunity.';
   if(wa)wa.setAttribute('href',realWa?L.whatsapp:'https://wa.me/919626412116?text='+encodeURIComponent(WA_TEXT));
   const call=$('#enqCall');if(call&&L.phone)call.setAttribute('href',L.phone);
-  V.initForm(form,{name:'enquiry_popup',successMsg:'Thank you. Your inquiry has been sent.'});
+  V.initForm(form,{name:'enquiry_popup',enquiry:true});
   function reset(){
     const st=$('.form-status',form);if(st){st.className='form-status';st.textContent=''}
     const sm=$('.error-summary',form);if(sm){sm.classList.remove('show');sm.innerHTML=''}
