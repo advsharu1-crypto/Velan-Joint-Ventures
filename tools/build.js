@@ -56,9 +56,30 @@ function convertLinks(html) {
 }
 const BASE_HTML = convertLinks(SRC);
 
+/* ---- Lean pages: each page's HTML carries only its own view. The other views (needed by the
+   in-page navigation) are served once from /views.html and filled in before the page scripts run. ---- */
+const MAIN_RE = /<main\b[^>]*\bdata-view="[^"]*"[^>]*>[\s\S]*?<\/main>/g;
+const VIEWS_HTML = '<!doctype html><meta charset="utf-8"><title>views</title>' + (BASE_HTML.match(MAIN_RE) || []).join('\n');
+const openTag = m => m.match(/^<main\b[^>]*>/)[0];
+function lean(html, keepId) {
+  const lastMain = html.lastIndexOf('</main>');
+  let head = html.slice(0, lastMain + 7), tail = html.slice(lastMain + 7);
+  head = head.replace(MAIN_RE, m => attr(openTag(m), 'id') === keepId ? m : openTag(m) + '</main>');
+  let n = 0;
+  tail = tail.replace(/<script>([\s\S]*?)<\/script>/g, (m, body) => { n++; return '<script type="text/plain" data-vjv-defer>' + body + '</script>'; });
+  if (!n) throw new Error('no inline scripts found to defer');
+  const boot = '<script>(function(){var q=[].slice.call(document.querySelectorAll("script[data-vjv-defer]"));' +
+    'function guard(e){e.preventDefault()}document.addEventListener("submit",guard,true);' +
+    'function run(){document.removeEventListener("submit",guard,true);q.forEach(function(s){var n=document.createElement("script");n.text=s.textContent;s.parentNode.replaceChild(n,s)})}' +
+    'function fill(t){var d=new DOMParser().parseFromString(t,"text/html");[].forEach.call(d.querySelectorAll("main[id]"),function(m){var s=document.getElementById(m.id);if(s&&s.tagName==="MAIN"&&!s.firstElementChild)s.innerHTML=m.innerHTML})}' +
+    'fetch("/views.html",{credentials:"same-origin"}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(fill).then(run,function(){return fetch("/views.html",{cache:"reload"}).then(function(r){return r.text()}).then(fill).then(run,run)});})();</script>';
+  return head + tail.replace(/<\/body>/, boot + '</body>');
+}
+
+const PRELOAD = '<link rel="preload" href="/views.html" as="fetch" crossorigin="anonymous">\n';
 const setMeta = (h, re, val) => { if (!re.test(h)) throw new Error('tag not found: ' + re); return h.replace(re, (m, a, b) => a + val + b); };
 function pageFor(v) {
-  if (v.isHome) return BASE_HTML;
+  if (v.isHome) return lean(BASE_HTML.replace('</head>', PRELOAD + '</head>'), home.id);
   const he = BASE_HTML.indexOf('</head>');
   let h = BASE_HTML.slice(0, he), rest = BASE_HTML.slice(he);
   const url = SITE + v.path;
@@ -80,7 +101,7 @@ function pageFor(v) {
   const homeTag = mains.find(t => attr(t, 'data-view') === 'home');
   const thisTag = mains.find(t => attr(t, 'id') === v.id);
   rest = rest.replace(homeTag, flip(homeTag, true)).replace(thisTag, flip(thisTag, false));
-  return h + rest;
+  return lean(h + PRELOAD + rest, v.id);
 }
 
 const urls = views.filter(v => v.isHome || (!NOINDEX.has(v.name) && !NOT_IN_SITEMAP.has(v.name))).map(v => SITE + v.path);
@@ -100,6 +121,7 @@ for (const v of views) {
   fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, pageFor(v));
 }
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sitemap);
+fs.writeFileSync(path.join(OUT, 'views.html'), VIEWS_HTML);
 const SKIP = new Set(['.git', '.gitignore', 'dist', 'tools', 'node_modules', 'vercel.json', 'index.html', 'sitemap.xml', 'README.md', 'package.json']);
 for (const f of fs.readdirSync(ROOT)) { if (SKIP.has(f)) continue; const p = path.join(ROOT, f); if (fs.statSync(p).isFile()) fs.copyFileSync(p, path.join(OUT, f)); }
 
