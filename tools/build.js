@@ -76,10 +76,12 @@ function lean(html, keepId) {
   return head + tail.replace(/<\/body>/, boot + '</body>');
 }
 
+let SCHEMA = {}; try { SCHEMA = JSON.parse(fs.readFileSync(path.join(__dirname, 'schema.json'), 'utf8')); } catch (e) { console.warn('note: tools/schema.json not found; pages will rely on script-generated structured data'); }
+const withSchema = (html, p) => SCHEMA[p] ? html.replace('</head>', '<script type="application/ld+json" id="viewLd">' + JSON.stringify(SCHEMA[p]).replace(/</g, '\\u003c') + '</script>\n</head>') : html;
 const PRELOAD = '<link rel="preload" href="/views.html" as="fetch" crossorigin="anonymous">\n';
 const setMeta = (h, re, val) => { if (!re.test(h)) throw new Error('tag not found: ' + re); return h.replace(re, (m, a, b) => a + val + b); };
 function pageFor(v) {
-  if (v.isHome) return lean(BASE_HTML.replace('</head>', PRELOAD + '</head>'), home.id);
+  if (v.isHome) return lean(withSchema(BASE_HTML.replace('</head>', PRELOAD + '</head>'), '/'), home.id);
   const he = BASE_HTML.indexOf('</head>');
   let h = BASE_HTML.slice(0, he), rest = BASE_HTML.slice(he);
   const url = SITE + v.path;
@@ -101,7 +103,7 @@ function pageFor(v) {
   const homeTag = mains.find(t => attr(t, 'data-view') === 'home');
   const thisTag = mains.find(t => attr(t, 'id') === v.id);
   rest = rest.replace(homeTag, flip(homeTag, true)).replace(thisTag, flip(thisTag, false));
-  return lean(h + PRELOAD + rest, v.id);
+  return lean(withSchema(h + PRELOAD + rest, v.path), v.id);
 }
 
 const urls = views.filter(v => v.isHome || (!NOINDEX.has(v.name) && !NOT_IN_SITEMAP.has(v.name))).map(v => SITE + v.path);
